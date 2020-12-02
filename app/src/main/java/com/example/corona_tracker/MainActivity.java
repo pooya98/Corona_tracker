@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,6 +17,13 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, com.example.corona_tracker.Loading.class);
         startActivity(intent);
+
+        Intent noti = new Intent(this, NotiService.class);
+
+        if(Build.VERSION.SDK_INT >= 26)
+            startForegroundService(noti);
+        else
+            startService(noti);
     }
 
     public void onclick_scan(View view) {
