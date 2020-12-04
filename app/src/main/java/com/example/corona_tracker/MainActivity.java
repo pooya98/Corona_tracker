@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, com.example.corona_tracker.Loading.class);
+        Intent intent = new Intent(this, Loading.class);
         startActivity(intent);
 
         Intent noti = new Intent(this, NotiService.class);
@@ -27,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onclick_scan(View view) {
-        Intent intent = new Intent(this, com.example.corona_tracker.Scan.class);
+        Intent intent = new Intent(this, Scan.class);
         startActivity(intent);
     }
 
     public void onclick_Lookup(View view) {
-        Intent intent = new Intent(this, com.example.corona_tracker.History_check.class);
+        Intent intent = new Intent(this, History_check.class);
         startActivity(intent);
     }
 }
