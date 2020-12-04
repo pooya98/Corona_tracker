@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/edit_title"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:hint="제목을 입력하세요."
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        android:inputType="textPersonName"
+        android:textColor="@android:color/black"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/memo_recent_modified"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_marginEnd="20dp"
+        android:text="최근 수정 : " />
+
+    <EditText
+        android:id="@+id/edit_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:gravity="start|top"
+        android:layout_marginHorizontal="10dp"
+        android:textColor="@android:color/black"
+        android:hint="내용을 입력하세요."
+        android:inputType="textMultiLine" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/image_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+</LinearLayout>
