@@ -13,25 +13,27 @@ public class NotiData implements Serializable {
     Calendar time, lastTime;
     String title, content;
     String author_id;
-    String ImageList;
+    int id;
 
     public NotiData() {
         time = Calendar.getInstance();
     }
 
-    public NotiData(Calendar _time, Calendar _lastTime, String title, String _content, String ImageList) {
+    public NotiData(Calendar _time, Calendar _lastTime, String title, String _content, String author_id, int id) {
         this.time = _time;
         this.lastTime = _lastTime;
         this.title = title;
         this.content = _content;
-        this.ImageList = ImageList;
+        this.author_id = author_id;
+        this.id = id;
     }
 
-    public void updateData(Calendar _time, String title, String _content, String ImageList) {
+    public void updateData(Calendar _time, String title, String _content, String author_id, int id) {
         this.time = _time;
         this.title = title;
         this.content = _content;
-        this.ImageList = ImageList;
+        this.author_id = author_id;
+        this.id = id;
     }
 
     public String getTimeToText(){
@@ -104,11 +106,19 @@ public class NotiData implements Serializable {
         this.content = content;
     }
 
-    public String getImageList() {
-        return ImageList;
+    public String getAuthor_id() {
+        return author_id;
     }
 
-    public void setImageList(String imageList) {
-        ImageList = imageList;
+    public void setAuthor_id(String author_id) {
+        this.author_id = author_id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

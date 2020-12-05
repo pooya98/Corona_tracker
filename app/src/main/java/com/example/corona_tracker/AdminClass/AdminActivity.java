@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.example.corona_tracker.DAO;
 import com.example.corona_tracker.R;
 
 import java.util.ArrayList;
@@ -16,11 +17,13 @@ public class AdminActivity extends AppCompatActivity {
     ArrayList<NotiData> datalist;
     RecyclerView recyclerView;
     NotiListAdapter listAdapter;
+    DAO dao = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        dao = new DAO();
         init_list();
         set_item();
     }
@@ -61,7 +64,11 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void setNotiItems(){
+        ArrayList<NotiData> list = dao.get_notiData_array();
         datalist.clear();
-        //TODO set Noti items
+        if(list == null) return;
+        for(NotiData d : list){
+            datalist.add(d);
+        }
     }
 }

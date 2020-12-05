@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".login"></activity>
+        <activity android:name=".AdminClass.AdminActivity"></activity>
 
         <service
             android:name=".NotiService"
