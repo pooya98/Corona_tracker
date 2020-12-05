@@ -28,7 +28,7 @@
             android:id="@+id/editText_adminID"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="text"
             app:layout_constraintStart_toEndOf="@id/textview_adminID"
             tools:ignore="MissingConstraints" />
 

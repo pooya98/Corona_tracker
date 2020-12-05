@@ -1,9 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
+android:orientation="vertical"
 tools:context=".Scan_result">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="출입 정보"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="30sp"></TextView>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:text="    출입 건물"
+            android:textSize="18sp"
+            android:textColor="#000"></TextView>
+
+        <TextView
+            android:id="@+id/TV_building_name"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:text="공대 구호관"
+            android:layout_height="match_parent"
+            android:background="#C4C8E3"
+            android:textSize="18sp"
+            android:layout_margin="20dp"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:text="    출입 일자"
+            android:textColor="#000"
+            android:textSize="18sp"></TextView>
+
+        <TextView
+            android:id="@+id/TV_enter_date"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:text="공대 구호관"
+            android:layout_height="match_parent"
+            android:background="#C4C8E3"
+            android:textSize="18sp"
+            android:layout_margin="20dp"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:text="    출입 시각"
+            android:textColor="#000"
+            android:textSize="18sp"></TextView>
+
+        <TextView
+            android:id="@+id/TV_enter_time"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:text="공대 구호관"
+            android:layout_height="match_parent"
+            android:background="#C4C8E3"
+            android:textSize="18sp"
+            android:layout_margin="20dp"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:text="    출입자 학번"
+            android:textColor="#000"
+            android:textSize="18sp"></TextView>
+
+        <TextView
+            android:id="@+id/TV_student_id"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:text="공대 구호관"
+            android:layout_height="match_parent"
+            android:background="#C4C8E3"
+            android:textSize="18sp"
+            android:layout_margin="20dp"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:text="    출입자 연락처"
+            android:textColor="#000"
+            android:textSize="18sp"></TextView>
+
+        <TextView
+            android:id="@+id/TV_student_phone"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:text="공대 구호관"
+            android:layout_height="match_parent"
+            android:background="#C4C8E3"
+            android:textSize="18sp"
+            android:layout_margin="20dp"></TextView>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_weight="0.5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"></TextView>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/BT_save"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="저장"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:onClick="onclick_BT_save">
+
+        </Button>
+
+        <Button
+            android:id="@+id/BT_cancel"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:onClick="onclick_BT_cancel">
+
+        </Button>
+    </LinearLayout>
+
+    <TextView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"></TextView>
+
+
+</LinearLayout>
