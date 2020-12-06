@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.example.corona_tracker.AdminClass.NotiData;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private long lastTimeBackPressed;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent noti = new Intent(this, NotiService.class);
 
-        if(Build.VERSION.SDK_INT >= 26)
+            if(Build.VERSION.SDK_INT >= 26)
             startForegroundService(noti);
         else
             startService(noti);
