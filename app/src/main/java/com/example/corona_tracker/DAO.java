@@ -39,6 +39,8 @@ public class DAO {
     java.util.List<NameValuePair> nameValuePairs;
     ArrayList<NotiData> list = null;
     NotiData notiData = null;
+    ArrayList<String> building_list;
+    ArrayList<EnterData> enterData_list;
 
     public void Test(){
         Thread loadThread = new Thread(){
@@ -78,6 +80,52 @@ public class DAO {
             e.getMessage();
         }
         return list;
+    }
+
+    public ArrayList<String> get_building_array(){
+
+        building_list = null;
+
+        Thread loadThread = new Thread(){
+            public void run(){
+                get_building_array_con();
+            }
+        };
+
+        loadThread.start();
+        System.out.println("--- loadThread go!");
+
+        try{
+            loadThread.join();
+            System.out.println("--- loadThread done!");
+        }catch(Exception e){
+            e.getMessage();
+        }
+        return building_list;
+    }
+
+
+
+    public ArrayList<EnterData> get_EnterData_array(final String building_name, final String enter_date){
+
+        enterData_list = null;
+
+        Thread loadThread = new Thread(){
+            public void run(){
+                get_EnterData_array_con(building_name, enter_date);
+            }
+        };
+
+        loadThread.start();
+        System.out.println("--- loadThread go!");
+
+        try{
+            loadThread.join();
+            System.out.println("--- loadThread done!");
+        }catch(Exception e){
+            e.getMessage();
+        }
+        return enterData_list;
     }
 
     public int get_notiData_count(){
@@ -395,6 +443,7 @@ public class DAO {
             }
 
             System.out.println("uuuuu"+response_string);
+            System.out.println("테스트 공지 입니다\n 테스트");
 
             String[] token;
             token = response_string.split("\\$");
@@ -406,15 +455,15 @@ public class DAO {
                 for (int i = 0; i < token.length; i = i+3) {
                     NotiData temp_notiData = new NotiData();
 
-                    notiData.setId(Integer.parseInt(token[i]));
+                    temp_notiData.setId(Integer.parseInt(token[i]));
                     System.out.println("token[0] - "+token[i]);
-                    notiData.setTitle(token[i+1]);
+                    temp_notiData.setTitle(token[i+1]);
                     System.out.println("token[1] - "+token[i+1]);
-                    notiData.setAuthor_id(token[i+2]);
+                    temp_notiData.setAuthor_id(token[i+2]);
                     System.out.println("token[2] - "+token[i+2]);
-                    notiData.setContent(token[i+3]);
+                    temp_notiData.setContent(token[i+3]);
                     System.out.println("token[3] - "+token[i+3]);
-                    notiData.setTimeFromText(token[i+4]);
+                    temp_notiData.setTimeFromText(token[i+4]);
                     System.out.println("token[4] - "+token[i+4]);
 
                     notiData = temp_notiData;
@@ -512,6 +561,41 @@ public class DAO {
         }
     }
 
+    void get_building_array_con(){
+        try{
+
+            httpclient=new DefaultHttpClient();
+            httppost = new HttpPost("http://14.45.108.71:80/corona_tracker/get_building_array.php"); // php주소 연동
+            response = httpclient.execute(httppost);
+
+            Scanner scan = new Scanner(response.getEntity().getContent());
+
+            String response_string = "";
+            while(scan.hasNext()){
+                response_string += scan.nextLine();
+            }
+
+            System.out.println("---Response : "+response_string);
+
+            String[] token;
+            token = response_string.split("\\^");
+
+            if(token[0].equals("")){
+            }
+            else {
+                building_list = new ArrayList<String>();
+                for (int i = 0; i < token.length; i++) {
+                    System.out.println("token " + i + " : " + token[i]);
+                    building_list.add(token[i]);
+                }
+            }
+
+        }catch(Exception E){
+            E.printStackTrace();
+        }
+    }
+
+
     void insert_enter_info_con(String building_id, String date, String time, String student_id, String student_phone){
         try{
 
@@ -539,6 +623,49 @@ public class DAO {
             }
 
             System.out.println("---Response : "+response_string);
+
+        }catch(Exception E){
+            E.printStackTrace();
+        }
+    }
+
+    void get_EnterData_array_con(String building_name, String enter_date ){
+        try{
+            httpclient=new DefaultHttpClient();
+            httppost = new HttpPost("http://14.45.108.71:80/corona_tracker/get_enterData_array.php"); // php주소 연동
+            nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("building_id", building_name.substring(1,4)));
+            nameValuePairs.add(new BasicNameValuePair("enter_date", enter_date));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
+            response = httpclient.execute(httppost);
+
+            Scanner scan = new Scanner(response.getEntity().getContent());
+
+            String response_string = "";
+            while(scan.hasNext()){
+                response_string += scan.nextLine();
+            }
+
+            System.out.println("response"+response_string);
+
+            String[] token;
+            token = response_string.split("\\$");
+
+            System.out.println("ddddd"+token.length);
+            if(token[0].equals("")){
+            }
+            else {
+                for (int i = 0; i < token.length; i = i+3) {
+                    EnterData temp_enterdata = new EnterData(token[i], token[i+1], token[i+2]);
+
+                    System.out.println("token[0] - "+token[i]);
+                    System.out.println("token[1] - "+token[i+1]);
+                    System.out.println("token[2] - "+token[i+2]);
+
+                    enterData_list.add(temp_enterdata);
+                    break;
+                }
+            }
 
         }catch(Exception E){
             E.printStackTrace();
