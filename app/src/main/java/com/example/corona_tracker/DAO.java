@@ -14,6 +14,12 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,6 +31,7 @@ public class DAO {
     boolean insert_notice_flag;
     boolean delete_notice_flag;
     boolean update_notice_flag;
+    int noti_data_count;
 
     HttpClient httpclient;
     HttpPost httppost;
@@ -32,6 +39,24 @@ public class DAO {
     java.util.List<NameValuePair> nameValuePairs;
     ArrayList<NotiData> list = null;
     NotiData notiData = null;
+
+    public void Test(){
+        Thread loadThread = new Thread(){
+            public void run(){
+                test_con();
+            }
+        };
+
+        loadThread.start();
+        System.out.println("--- loadThread go!");
+
+        try{
+            loadThread.join();
+            System.out.println("--- loadThread done!");
+        }catch(Exception e){
+            e.getMessage();
+        }
+    }
 
     public ArrayList<NotiData> get_notiData_array(){
 
@@ -53,6 +78,28 @@ public class DAO {
             e.getMessage();
         }
         return list;
+    }
+
+    public int get_notiData_count(){
+
+        noti_data_count = 0;
+
+        Thread loadThread = new Thread(){
+            public void run(){
+                get_notiData_count_con();
+            }
+        };
+
+        loadThread.start();
+        System.out.println("--- loadThread go!");
+
+        try{
+            loadThread.join();
+            System.out.println("--- loadThread done!");
+        }catch(Exception e){
+            e.getMessage();
+        }
+        return noti_data_count;
     }
 
     public NotiData get_notiData(final int notice_id){
@@ -217,7 +264,27 @@ public class DAO {
     //
     //
 
+    void test_con(){
+        try {
+            URL url = new URL("http://14.45.108.71:80/corona_tracker/show_notice.php");
 
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            try{
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                InputStreamReader reader = new InputStreamReader(in);
+                BufferedReader br = new BufferedReader(reader);
+
+                String a = br.readLine();
+                System.out.println("titi"+a);
+            }finally {
+                urlConnection.disconnect();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
 
     void get_notice(){
         try{
@@ -246,13 +313,40 @@ public class DAO {
                 for (int i = 0; i < token.length; i = i+3) {
                     NotiData notiData = new NotiData();
 
-                    //notiData.setID(token[i]);
+                    notiData.setId(Integer.parseInt(token[i]));
                     System.out.println("token[0] - "+token[i]);
                     notiData.setTitle(token[i+1]);
                     System.out.println("token[1] - "+token[i+1]);
                     notiData.setTimeFromText(token[i+2]);
                     System.out.println("token[2] - "+token[i+2]);
                     list.add(notiData);
+                }
+            }
+
+
+        }catch(Exception E){
+            E.printStackTrace();
+        }
+    }
+
+    void get_notiData_count_con(){
+        try{
+
+            httpclient=new DefaultHttpClient();
+            httppost = new HttpPost("http://14.45.108.71:80/corona_tracker/get_notiData_count.php"); // php주소 연동
+            response = httpclient.execute(httppost);
+
+            Scanner scan = new Scanner(response.getEntity().getContent());
+
+            String response_string = "";
+
+            while(scan.hasNext()){
+                response_string += scan.nextLine();
+                if(response_string.equals("")){
+
+                }else{
+                    noti_data_count = Integer.parseInt(response_string);
+                    System.out.println("assssa"+noti_data_count);
                 }
             }
 
@@ -292,11 +386,11 @@ public class DAO {
                 for (int i = 0; i < token.length; i = i+3) {
                     NotiData notiData = new NotiData();
 
-                    //notiData.setID(token[i]);
+                    notiData.setId(Integer.parseInt(token[i]));
                     System.out.println("token[0] - "+token[i]);
                     notiData.setTitle(token[i+1]);
                     System.out.println("token[1] - "+token[i+1]);
-                    //notiData.setAuthorID(token[i+2]);
+                    notiData.setAuthor_id(token[i+2]);
                     System.out.println("token[2] - "+token[i+2]);
                     notiData.setContent(token[i+3]);
                     System.out.println("token[3] - "+token[i+3]);
@@ -436,8 +530,7 @@ public class DAO {
             httppost = new HttpPost("http://14.45.108.71:80/corona_tracker/insert_notice.php"); // php주소 연동
             nameValuePairs = new ArrayList<NameValuePair>(2);
             nameValuePairs.add(new BasicNameValuePair("title", insert_notiData.getTitle()));
-            //nameValuePairs.add(new BasicNameValuePair("manager_id", insert_notiData.getAuthorID()));
-            nameValuePairs.add(new BasicNameValuePair("manager_id", "manager1"));
+            nameValuePairs.add(new BasicNameValuePair("manager_id", insert_notiData.getAuthor_id()));
             nameValuePairs.add(new BasicNameValuePair("contents", insert_notiData.getContent()));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
             response = httpclient.execute(httppost);
@@ -467,10 +560,9 @@ public class DAO {
             httpclient=new DefaultHttpClient();
             httppost = new HttpPost("http://14.45.108.71:80/corona_tracker/update_notice.php"); // php주소 연동
             nameValuePairs = new ArrayList<NameValuePair>(2);
-            //nameValuePairs.add(new BasicNameValuePair("notice_id", update_notiData.getNoticeID()));
-            nameValuePairs.add(new BasicNameValuePair("notice_id", Integer.toString(13)));
+            nameValuePairs.add(new BasicNameValuePair("notice_id", Integer.toString(update_notiData.getId())));
             nameValuePairs.add(new BasicNameValuePair("new_title", update_notiData.getTitle()));
-            //nameValuePairs.add(new BasicNameValuePair("manager_id", insert_notiData.getAuthorID()));
+            nameValuePairs.add(new BasicNameValuePair("manager_id", update_notiData.getAuthor_id()));
             nameValuePairs.add(new BasicNameValuePair("new_contents", update_notiData.getContent()));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "utf-8"));
             response = httpclient.execute(httppost);
