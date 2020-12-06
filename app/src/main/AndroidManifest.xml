@@ -17,8 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".login"></activity>
-        <activity android:name=".AdminClass.AdminActivity"></activity>
+        <activity android:name=".AdminClass.ModifyNotificationActivity"></activity>
+        <activity android:name=".login" />
+        <activity android:name=".AdminClass.AdminActivity" />
 
         <service
             android:name=".NotiService"

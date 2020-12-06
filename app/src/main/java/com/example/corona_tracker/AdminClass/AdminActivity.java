@@ -1,9 +1,11 @@
 package com.example.corona_tracker.AdminClass;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.corona_tracker.DAO;
@@ -35,8 +37,8 @@ public class AdminActivity extends AppCompatActivity {
 
         // 순서를 역순으로 설정
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mLayoutManager.setReverseLayout(true);
-        mLayoutManager.setStackFromEnd(true);
+//        mLayoutManager.setReverseLayout(true);
+//        mLayoutManager.setStackFromEnd(true);
 
         recyclerView = findViewById(R.id.admin_noti_list);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -69,6 +71,14 @@ public class AdminActivity extends AppCompatActivity {
         if(list == null) return;
         for(NotiData d : list){
             datalist.add(d);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100 && resultCode == RESULT_OK){
+            set_item();
         }
     }
 }

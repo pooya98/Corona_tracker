@@ -1,6 +1,8 @@
 package com.example.corona_tracker.AdminClass;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,14 +33,14 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
             text_date = itemView.findViewById(R.id.l_item_date);
 
             // 리스트 아이템을 터치하면 상세보기 & 수정 가능
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(v.getContext(), AddMemoActivity.class);
-//                    intent.putExtra("idx", getAdapterPosition());
-//                    ((Activity)v.getContext()).startActivityForResult(intent, MainActivity.ADD_REQUEST_CODE);
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ModifyNotificationActivity.class);
+                    intent.putExtra("idx", getAdapterPosition());
+                    ((Activity)v.getContext()).startActivityForResult(intent, 100);
+                }
+            });
         }
     }
 
