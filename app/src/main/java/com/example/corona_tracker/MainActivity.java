@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent noti = new Intent(this, NotiService.class);
 
+
+
             if(Build.VERSION.SDK_INT >= 26)
             startForegroundService(noti);
         else

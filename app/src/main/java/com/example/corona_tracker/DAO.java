@@ -655,8 +655,8 @@ public class DAO {
             if(token[0].equals("")){
             }
             else {
+                enterData_list = new ArrayList<EnterData>();
                 for (int i = 0; i < token.length; i = i+3) {
-                    enterData_list = new ArrayList<EnterData>();
                     EnterData temp_enterdata = new EnterData(token[i], token[i+1], token[i+2]);
 
                     System.out.println("token[0] - "+token[i]);
