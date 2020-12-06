@@ -167,6 +167,27 @@ public class DAO {
         return update_notice_flag;
     }
 
+    public boolean delete_notice(final int notice_id){
+
+        Thread loadThread = new Thread(){
+            public void run(){
+                delete_notice_con(notice_id);
+            }
+        };
+
+        loadThread.start();
+        System.out.println("--- loadThread go!");
+
+        try{
+            loadThread.join();
+            System.out.println("--- loadThread done!");
+        }catch(Exception e){
+            e.getMessage();
+        }
+
+        return delete_notice_flag;
+    }
+
     public boolean check_admin_account(final String admin_ID, final String admin_PW){
 
         boolean success_flag = false;
@@ -382,9 +403,8 @@ public class DAO {
             if(token[0].equals("")){
             }
             else {
-                list = new ArrayList<NotiData>();
                 for (int i = 0; i < token.length; i = i+3) {
-                    NotiData notiData = new NotiData();
+                    NotiData temp_notiData = new NotiData();
 
                     notiData.setId(Integer.parseInt(token[i]));
                     System.out.println("token[0] - "+token[i]);
@@ -396,6 +416,8 @@ public class DAO {
                     System.out.println("token[3] - "+token[i+3]);
                     notiData.setTimeFromText(token[i+4]);
                     System.out.println("token[4] - "+token[i+4]);
+
+                    notiData = temp_notiData;
                     break;
                 }
             }
