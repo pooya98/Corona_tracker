@@ -23,14 +23,10 @@ import android.widget.Toast;
 import com.example.corona_tracker.DAO;
 import com.example.corona_tracker.R;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ModifyNotificationActivity extends AppCompatActivity {
-
-    String imageNameBuffer;
 
     TextView dateTextView = null;
     EditText titleEdit = null;
@@ -55,11 +51,11 @@ public class ModifyNotificationActivity extends AppCompatActivity {
 
     // 뷰 초기 설정
     private void initView(){
-        // 현재 메모의 index를 불러온다; 새로 만드는 메모일 경우 -1을 반환
+        // 현재 공지의 index를 불러온다; 새로 만드는 공지일 경우 -1을 반환
         Intent intent = getIntent();
         idx = intent.getExtras().getInt("idx", -1);
 
-        dateTextView = findViewById(R.id.memo_recent_modified);
+        dateTextView = findViewById(R.id.noti_recent_modified);
 
         titleEdit = findViewById(R.id.edit_title);
         titleEdit.addTextChangedListener(watcher);
@@ -72,7 +68,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        // 메모를 불러온것이면 기존 데이터를 채워넣는다
+        // 공지를 불러온것이면 기존 데이터를 채워넣는다
         if(idx != -1){
             inputEditData();
             isReadOnly = true;
@@ -85,10 +81,9 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         isModified = false;
     }
 
-    // 기존 메모를 TextView에 채워넣는 메소드; 메모를 새로 만드는 경우에는 호출하지 않는다
+    // 기존 공지를 TextView에 채워넣는 메소드; 공지를 새로 만드는 경우에는 호출하지 않는다
     private void inputEditData(){
-        ArrayList<NotiData> l = dao.get_notiData_array();
-        NotiData data = l.get(idx);
+        NotiData data = dao.get_notiData(idx);
         Log.d("mTag", idx+"");
         titleEdit.setText(data.getTitle());
         contentEdit.setText(data.getContent());
@@ -99,7 +94,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         dateTextView.setText(dateString);
     }
 
-    // 액션바에 있는 메뉴 설정; 메모를 처음 만들경우 WritableMode, 기존 메모를 확인하는 경우 ReadOnlyMoce
+    // 액션바에 있는 메뉴 설정; 공지를 처음 만들경우 WritableMode, 기존 공지를 확인하는 경우 ReadOnlyMoce
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_noti, menu);
@@ -107,10 +102,10 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         saveMenu = menu.findItem(R.id.m_save_noti);
         addImageMenu = menu.findItem(R.id.m_add_image);
 
-        if(idx == -1){        // when adding memo
+        if(idx == -1){        // when adding noti
             changeToWritableMode();
         }
-        else{                   //when seeing memo
+        else{                   //when seeing noti
             changeToReadOnlyMode();
         }
         return super.onCreateOptionsMenu(menu);
@@ -132,7 +127,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
             case R.id.m_save_noti:
                 if(isModified) {
                     if(checkCanSave() == 0){
-                        // 메모가 수정되었고 저장 가능하면 저장 후 ReadOnlyMode
+                        // 공지가 수정되었고 저장 가능하면 저장 후 ReadOnlyMode
                         saveMemo();
                         changeToReadOnlyMode();
                     }
@@ -149,25 +144,25 @@ public class ModifyNotificationActivity extends AppCompatActivity {
                 return true ;
 
             case R.id.m_delete_noti:
-//                DialogInterface.OnClickListener positive = new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        if(idx != -1) {
-//
-//                            setResult(RESULT_OK);
-//                        }
-//                        showToast("메모를 삭제하였습니다.", Toast.LENGTH_SHORT);
-//                        finish();
-//                    }
-//                };
-//                createDialog("메모 삭제", "메모를 삭제하시겠습니까?", "예", positive, "아니요", null).show();
+                DialogInterface.OnClickListener positive = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(idx != -1) {
+                            dao.delete_notice(idx);
+                            setResult(RESULT_OK);
+                        }
+                        showToast("공지를 삭제하였습니다.", Toast.LENGTH_SHORT);
+                        finish();
+                    }
+                };
+                createDialog("공지 삭제", "공지를 삭제하시겠습니까?", "예", positive, "아니요", null).show();
                 return true;
             default :
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    //메모 상세보기 <-> 메모 수정
+    //공지 상세보기 <-> 공지 수정
     private void changeToReadOnlyMode(){
         hideKeyboard();
         editMenu.setVisible(true);
@@ -193,8 +188,8 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         saveMenu.setVisible(true);
         addImageMenu.setVisible(true);
         isReadOnly = false;
-        if(idx != -1) getSupportActionBar().setTitle("메모 수정");
-        else getSupportActionBar().setTitle("메모 추가");
+        if(idx != -1) getSupportActionBar().setTitle("공지 수정");
+        else getSupportActionBar().setTitle("공지 추가");
     }
 
     // 제목 또는 내용이 비어있으면 저장 불가; 그 외에는 저장가능
@@ -204,7 +199,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         else return 0;
     }
 
-    // 메모를 저장하는 메소드
+    // 공지를 저장하는 메소드
     private void saveMemo(){
         int canSave = checkCanSave();
         if(canSave != 0){
@@ -215,17 +210,17 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         isModified = false;
         isSaved = true;
 
-        // DB에 메모를 저장; 작성일 이외의 데이터를 업데이트
+        // DB에 공지를 저장; 작성일 이외의 데이터를 업데이트
         Calendar toSaveCalendar = Calendar.getInstance(), lastDate = Calendar.getInstance();
-        ArrayList<NotiData> l = dao.get_notiData_array();
+
         if(idx != -1){
-            NotiData oldData = l.get(idx);
+            NotiData oldData = dao.get_notiData(idx);
             toSaveCalendar = oldData.getTime();
             lastDate = Calendar.getInstance();
         }
-        NotiData data = new NotiData(toSaveCalendar, lastDate, titleEdit.getText().toString(), contentEdit.getText().toString(), "manager", l.get(idx).getId());
+        NotiData data = new NotiData(toSaveCalendar, lastDate, titleEdit.getText().toString(), contentEdit.getText().toString(), "manager", idx);
 
-        // 메모가 처음 만든것이면 DB에 추가; 수정중이면 업데이트
+        // 공지가 처음 만든것이면 DB에 추가; 수정중이면 업데이트
         if(idx == -1) {
             dao.insert_notice(data);
         }
@@ -234,11 +229,10 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         }
 
         String dateString = "작성일 : " + new SimpleDateFormat("yyyy.MM.dd HH:mm").format(data.getTime().getTime());
-        if(data.getLastTime() != null && !data.getTime().equals(data.getLastTime())) dateString += "\n" + "수정일 : " + new SimpleDateFormat("yyyy.MM.dd HH:mm").format(data.getLastTime().getTime());
 
         dateTextView.setVisibility(View.VISIBLE);
         dateTextView.setText(dateString);
-        showToast("메모를 저장하였습니다.", Toast.LENGTH_SHORT);
+        showToast("공지를 저장하였습니다.", Toast.LENGTH_SHORT);
         return;
     }
 
@@ -251,7 +245,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         if(canSave == 1) message = "제목";
         else if (canSave == 2) message = "내용";
 
-        // 메모 내용이 수정되었을때 저장가능한지 체크하고 저장 / 폐기한다
+        // 공지 내용이 수정되었을때 저장가능한지 체크하고 저장 / 폐기한다
         if (isModified) {
 
             // 저장할 수 없을때
@@ -278,7 +272,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         }
     }
 
-    // 메모가 수정 & 저장 되었는지 체크 후 종료
+    // 공지가 수정 & 저장 되었는지 체크 후 종료
     private void exitActivity(){
         if(isSaved) { setResult(RESULT_OK); }
         else if (!isSaved && !isReadOnly){
@@ -288,20 +282,20 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         finish();
     }
 
-    // 메모가 수정되었고 저장가능할 때 호출
+    // 공지가 수정되었고 저장가능할 때 호출
     private void onModiFiedAndCanSave(){
-        // 메모를 처음 만들었으면 저장하고 나간다
+        // 공지를 처음 만들었으면 저장하고 나간다
         if(idx == -1) {
             saveMemo();
             setResult(RESULT_OK);
             finish();
         }
 
-        // 메모를 수정중이면 물어보고 결정
+        // 공지를 수정중이면 물어보고 결정
         else {
             final CharSequence[] items =  {"저장하고 나가기", "저장하지 않고 나가기", "취소"};
             AlertDialog.Builder oDialog = new AlertDialog.Builder(this)
-                    .setTitle("메모를 저장하시겠습니까?")
+                    .setTitle("공지를 저장하시겠습니까?")
                     .setItems(items, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int pos) {
                             switch (pos){

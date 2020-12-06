@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.corona_tracker.AdminClass.Static.ImageCompute;
+import com.example.corona_tracker.DAO;
 import com.example.corona_tracker.R;
 
 import java.util.ArrayList;
@@ -31,13 +32,13 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
             text_title = itemView.findViewById(R.id.l_item_title);
             text_content = itemView.findViewById(R.id.l_item_content);
             text_date = itemView.findViewById(R.id.l_item_date);
-
+            DAO dao = new DAO();
             // 리스트 아이템을 터치하면 상세보기 & 수정 가능
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), ModifyNotificationActivity.class);
-                    intent.putExtra("idx", getAdapterPosition());
+                    intent.putExtra("idx", datalist.get(getAdapterPosition()).getId());
                     ((Activity)v.getContext()).startActivityForResult(intent, 100);
                 }
             });

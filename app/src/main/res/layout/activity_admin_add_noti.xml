@@ -16,7 +16,7 @@
         android:singleLine="true" />
 
     <TextView
-        android:id="@+id/memo_recent_modified"
+        android:id="@+id/noti_recent_modified"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
@@ -35,10 +35,4 @@
         android:textColor="@android:color/black"
         android:hint="내용을 입력하세요."
         android:inputType="textMultiLine" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/image_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"/>
 </LinearLayout>

@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.corona_tracker.DAO;
 import com.example.corona_tracker.R;
@@ -80,5 +82,12 @@ public class AdminActivity extends AppCompatActivity {
         if(requestCode == 100 && resultCode == RESULT_OK){
             set_item();
         }
+    }
+
+
+    public void addNoti(View view) {
+        Intent intent = new Intent(this, ModifyNotificationActivity.class);
+        intent.putExtra("idx", -1);
+        startActivityForResult(intent, 100);
     }
 }
