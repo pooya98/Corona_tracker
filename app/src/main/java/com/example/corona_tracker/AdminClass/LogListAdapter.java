@@ -12,13 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.corona_tracker.DAO;
+import com.example.corona_tracker.EnterData;
 import com.example.corona_tracker.R;
 
 import java.util.ArrayList;
 
-public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHolder> {
-    private ArrayList<NotiListItem> aData = null;
-    private ArrayList<NotiData> datalist;
+public class LogListAdapter extends RecyclerView.Adapter<LogListAdapter.ViewHolder> {
+
+    private ArrayList<LogListItem> aData = null;
+    private ArrayList<EnterData> datalist;
     Context context;
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView text_title, text_content, text_date;
@@ -29,19 +31,10 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
             text_content = itemView.findViewById(R.id.l_item_content);
             text_date = itemView.findViewById(R.id.l_item_date);
             DAO dao = new DAO();
-            // 리스트 아이템을 터치하면 상세보기 & 수정 가능
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), ModifyNotificationActivity.class);
-                    intent.putExtra("idx", datalist.get(getAdapterPosition()).getId());
-                    ((Activity)v.getContext()).startActivityForResult(intent, 100);
-                }
-            });
         }
     }
 
-    public  NotiListAdapter(Context context, ArrayList<NotiListItem> list, ArrayList<NotiData> datalist){
+    public LogListAdapter(Context context, ArrayList<LogListItem> list, ArrayList<EnterData> datalist){
         this.context = context;
         aData = list;
         this.datalist = datalist;
@@ -49,19 +42,19 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
 
     @NonNull
     @Override
-    public NotiListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public LogListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
 
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_noti_list, viewGroup, false);
-        NotiListAdapter.ViewHolder vh = new NotiListAdapter.ViewHolder(view);
+        View view = inflater.inflate(R.layout.item_log_list, viewGroup, false);
+        LogListAdapter.ViewHolder vh = new LogListAdapter.ViewHolder(view);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final LogListAdapter.ViewHolder viewHolder, int i) {
         final int idx = i;
-        final NotiData data = datalist.get(i);
+        final EnterData data = datalist.get(i);
         if(data == null) return;
 
         String title = aData.get(i).getTitle();

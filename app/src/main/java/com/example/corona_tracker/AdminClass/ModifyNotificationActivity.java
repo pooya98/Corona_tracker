@@ -32,7 +32,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
     EditText titleEdit = null;
     EditText contentEdit = null;
 
-    MenuItem editMenu, saveMenu, addImageMenu;
+    MenuItem editMenu, saveMenu;
 
     private int idx;
     DAO dao;
@@ -84,10 +84,9 @@ public class ModifyNotificationActivity extends AppCompatActivity {
     // 기존 공지를 TextView에 채워넣는 메소드; 공지를 새로 만드는 경우에는 호출하지 않는다
     private void inputEditData(){
         NotiData data = dao.get_notiData(idx);
-        Log.d("mTag", idx+"");
         titleEdit.setText(data.getTitle());
-        contentEdit.setText(data.getContent());
-
+        data.setContent(data.getContent().replaceAll("!@#////", System.getProperty("line.separator")));
+        contentEdit.setText(data.getContent() + "");
         String dateString = "작성일 : " + new SimpleDateFormat("yyyy.MM.dd HH:mm").format(data.getTime().getTime());
         if(data.getLastTime() != null && !data.getTime().equals(data.getLastTime())) dateString += "\n" + "수정일 : " + new SimpleDateFormat("yyyy.MM.dd HH:mm").format(data.getLastTime().getTime());
 
@@ -100,7 +99,6 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_noti, menu);
         editMenu = menu.findItem(R.id.m_edit_noti);
         saveMenu = menu.findItem(R.id.m_save_noti);
-        addImageMenu = menu.findItem(R.id.m_add_image);
 
         if(idx == -1){        // when adding noti
             changeToWritableMode();
@@ -167,7 +165,6 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         hideKeyboard();
         editMenu.setVisible(true);
         saveMenu.setVisible(false);
-        addImageMenu.setVisible(false);
         titleEdit.setFocusable(false);
         contentEdit.setFocusable(false);
         isReadOnly = true;
@@ -186,7 +183,6 @@ public class ModifyNotificationActivity extends AppCompatActivity {
 
         editMenu.setVisible(false);
         saveMenu.setVisible(true);
-        addImageMenu.setVisible(true);
         isReadOnly = false;
         if(idx != -1) getSupportActionBar().setTitle("공지 수정");
         else getSupportActionBar().setTitle("공지 추가");
@@ -218,7 +214,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
             toSaveCalendar = oldData.getTime();
             lastDate = Calendar.getInstance();
         }
-        NotiData data = new NotiData(toSaveCalendar, lastDate, titleEdit.getText().toString(), contentEdit.getText().toString(), "manager", idx);
+        NotiData data = new NotiData(toSaveCalendar, lastDate, titleEdit.getText().toString(), contentEdit.getText().toString().replaceAll("\n", "!@#////"), "manager", idx);
 
         // 공지가 처음 만든것이면 DB에 추가; 수정중이면 업데이트
         if(idx == -1) {
