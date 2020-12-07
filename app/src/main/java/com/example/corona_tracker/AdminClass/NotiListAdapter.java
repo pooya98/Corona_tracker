@@ -21,12 +21,11 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
     private ArrayList<NotiData> datalist;
     Context context;
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView text_title, text_content, text_date;
+        TextView text_title, text_date;
         ViewHolder(View itemView) {
             super(itemView) ;
 
             text_title = itemView.findViewById(R.id.l_item_title);
-            text_content = itemView.findViewById(R.id.l_item_content);
             text_date = itemView.findViewById(R.id.l_item_date);
             DAO dao = new DAO();
             // 리스트 아이템을 터치하면 상세보기 & 수정 가능
@@ -69,7 +68,6 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
         String time = aData.get(i).getDate();
 
         viewHolder.text_title.setText(title);
-        viewHolder.text_content.setText(content);
         viewHolder.text_date.setText(time);
     }
 

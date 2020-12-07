@@ -10,7 +10,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -126,7 +125,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
                 if(isModified) {
                     if(checkCanSave() == 0){
                         // 공지가 수정되었고 저장 가능하면 저장 후 ReadOnlyMode
-                        saveMemo();
+                        saveNoti();
                         changeToReadOnlyMode();
                     }
                     else{
@@ -196,13 +195,13 @@ public class ModifyNotificationActivity extends AppCompatActivity {
     }
 
     // 공지를 저장하는 메소드
-    private void saveMemo(){
+    private void saveNoti(){
+        boolean result;
         int canSave = checkCanSave();
         if(canSave != 0){
             return;
         }
 
-        // Cache에 저장된 이미지를 옮긴다
         isModified = false;
         isSaved = true;
 
@@ -218,17 +217,22 @@ public class ModifyNotificationActivity extends AppCompatActivity {
 
         // 공지가 처음 만든것이면 DB에 추가; 수정중이면 업데이트
         if(idx == -1) {
-            dao.insert_notice(data);
+            result = dao.insert_notice(data);
         }
         else{
-            dao.update_notice(data);
+            result = dao.update_notice(data);
         }
 
         String dateString = "작성일 : " + new SimpleDateFormat("yyyy.MM.dd HH:mm").format(data.getTime().getTime());
 
         dateTextView.setVisibility(View.VISIBLE);
-        dateTextView.setText(dateString);
-        showToast("공지를 저장하였습니다.", Toast.LENGTH_SHORT);
+        if(result){
+            dateTextView.setText(dateString);
+            showToast("공지를 저장하였습니다.", Toast.LENGTH_SHORT);
+        }
+        else{
+            showToast("오류가 생겨 저장에 실패했습니다.", Toast.LENGTH_SHORT);
+        }
         return;
     }
 
@@ -282,7 +286,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
     private void onModiFiedAndCanSave(){
         // 공지를 처음 만들었으면 저장하고 나간다
         if(idx == -1) {
-            saveMemo();
+            saveNoti();
             setResult(RESULT_OK);
             finish();
         }
@@ -296,7 +300,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int pos) {
                             switch (pos){
                                 case 0:
-                                    saveMemo();
+                                    saveNoti();
                                     setResult(RESULT_OK);
                                     finish();
                                     break;

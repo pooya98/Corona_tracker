@@ -3,6 +3,7 @@ package com.example.corona_tracker.AdminClass;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +28,9 @@ public class LogListAdapter extends RecyclerView.Adapter<LogListAdapter.ViewHold
         ViewHolder(View itemView) {
             super(itemView) ;
 
-            text_title = itemView.findViewById(R.id.l_item_title);
-            text_content = itemView.findViewById(R.id.l_item_content);
-            text_date = itemView.findViewById(R.id.l_item_date);
+            text_title = itemView.findViewById(R.id.l_log_title);
+            text_content = itemView.findViewById(R.id.l_log_content);
+            text_date = itemView.findViewById(R.id.l_log_date);
             DAO dao = new DAO();
         }
     }

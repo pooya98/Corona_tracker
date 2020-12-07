@@ -42,6 +42,7 @@ public class LogFragment extends Fragment {
     LogListAdapter listAdapter;
     DAO dao = null;
     Button dateButton;
+    SimpleDateFormat format;
 
     @Nullable
     @Override
@@ -60,7 +61,7 @@ public class LogFragment extends Fragment {
             }
         });
 
-        SimpleDateFormat format = new SimpleDateFormat(DATE_PAT);
+        format = new SimpleDateFormat(DATE_PAT);
         dateButton.setText(format.format(date.getTime()));
         init_list();
         set_item();
@@ -113,12 +114,9 @@ public class LogFragment extends Fragment {
     }
 
     private void setLogItems(){
-        SimpleDateFormat format = new SimpleDateFormat(DATE_PAT);
-        Log.d("mTag", buildings.get(spinner.getSelectedItemPosition()) + format.format(date.getTime()));
         ArrayList<EnterData> list = dao.get_EnterData_array(buildings.get(spinner.getSelectedItemPosition()), format.format(date.getTime()));
         datalist.clear();
         if(list == null) return;
-        Log.d("mTag", "" + list.size());
         for(EnterData d : list){
             datalist.add(d);
         }
@@ -130,7 +128,7 @@ public class LogFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         date.set(year, month, dayOfMonth);
-                        dateButton.setText(date.get(Calendar.YEAR) + "-" + (date.get(Calendar.MONTH)+1) + "-" + date.get(Calendar.DAY_OF_MONTH));
+                        dateButton.setText(format.format(date.getTime()));
                         set_item();
                     }
                 }, date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));

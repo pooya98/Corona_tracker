@@ -19,20 +19,20 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/noti_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="공지 목록"
-                android:onClick="setNotiFrame"/>
+                android:background="#FFFFFF"/>
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/log_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="출입 기록"
-                android:onClick="setLogFrame"/>
+                android:background="#FFFFFF"/>
 
         </LinearLayout>
 

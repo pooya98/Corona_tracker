@@ -13,6 +13,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:drawablePadding="-50dp"
+            android:paddingLeft="40dp"
+            android:drawableStart="@drawable/ic_calendar"
             android:text="날짜 선택" />
 
         <Spinner

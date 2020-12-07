@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.corona_tracker.R;
@@ -28,6 +30,28 @@ public class AdminActivity extends AppCompatActivity {
         logFragment = new LogFragment();
 
         fragmentTransaction.add(R.id.main_frame, notiFragment).commit();
+
+        final Button noti_b = findViewById(R.id.noti_button);
+        final Button log_b = findViewById(R.id.log_button);
+        noti_b.setPaintFlags(noti_b.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        noti_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noti_b.setPaintFlags(noti_b.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                log_b.setPaintFlags(noti_b.getPaintFlags() & (-1 ^ Paint.UNDERLINE_TEXT_FLAG));
+                replaceFragment(notiFragment);
+            }
+        });
+
+        log_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                log_b.setPaintFlags(log_b.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                noti_b.setPaintFlags(noti_b.getPaintFlags() & (-1 ^ Paint.UNDERLINE_TEXT_FLAG));
+                replaceFragment(logFragment);
+            }
+        });
     }
 
     @Override
@@ -44,14 +68,6 @@ public class AdminActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_frame, fragment);
         //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-    public void setNotiFrame(View view) {
-        replaceFragment(notiFragment);
-    }
-
-    public void setLogFrame(View view) {
-        replaceFragment(logFragment);
     }
 
     @Override
