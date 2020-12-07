@@ -20,6 +20,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
     private ArrayList<NotiListItem> aData = null;
     private ArrayList<NotiData> datalist;
     Context context;
+    boolean isAdmin;
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView text_title, text_date;
         ViewHolder(View itemView) {
@@ -28,22 +29,24 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
             text_title = itemView.findViewById(R.id.l_item_title);
             text_date = itemView.findViewById(R.id.l_item_date);
             DAO dao = new DAO();
-            // 리스트 아이템을 터치하면 상세보기 & 수정 가능
+            // 리스트 아이템을 터치하면 상세보기 & 수정 가능 (수정은 관리자의 경우만)
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                    @Override
+                    public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), ModifyNotificationActivity.class);
                     intent.putExtra("idx", datalist.get(getAdapterPosition()).getId());
+                    intent.putExtra("admin", isAdmin);
                     ((Activity)v.getContext()).startActivityForResult(intent, 100);
-                }
-            });
+                    }
+                });
         }
     }
 
-    public  NotiListAdapter(Context context, ArrayList<NotiListItem> list, ArrayList<NotiData> datalist){
+    public  NotiListAdapter(Context context, ArrayList<NotiListItem> list, ArrayList<NotiData> datalist, boolean isAdmin){
         this.context = context;
         aData = list;
         this.datalist = datalist;
+        this.isAdmin = isAdmin;
     }
 
     @NonNull
@@ -64,8 +67,7 @@ public class NotiListAdapter extends RecyclerView.Adapter<NotiListAdapter.ViewHo
         if(data == null) return;
 
         String title = aData.get(i).getTitle();
-        String content = aData.get(i).getContent();
-        String time = aData.get(i).getDate();
+        String time = aData.get(i).getDate().split(" ")[0];
 
         viewHolder.text_title.setText(title);
         viewHolder.text_date.setText(time);

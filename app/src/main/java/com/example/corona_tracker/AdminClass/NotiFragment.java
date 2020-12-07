@@ -43,7 +43,7 @@ public class NotiFragment extends Fragment {
     private void init_list(){
         list = new ArrayList<>();
         datalist = new ArrayList<>();
-        listAdapter = new NotiListAdapter(v.getContext(), list, datalist);
+        listAdapter = new NotiListAdapter(v.getContext(), list, datalist, true);
         add_button = v.findViewById(R.id.add_noti_button);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(v.getContext());
 

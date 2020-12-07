@@ -34,6 +34,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
     MenuItem editMenu, saveMenu;
 
     private int idx;
+    private boolean isAdmin;
     DAO dao;
 
     private boolean isModified = false, isSaved = false;
@@ -53,6 +54,7 @@ public class ModifyNotificationActivity extends AppCompatActivity {
         // 현재 공지의 index를 불러온다; 새로 만드는 공지일 경우 -1을 반환
         Intent intent = getIntent();
         idx = intent.getExtras().getInt("idx", -1);
+        isAdmin = intent.getExtras().getBoolean("admin", false);
 
         dateTextView = findViewById(R.id.noti_recent_modified);
 
@@ -77,6 +79,13 @@ public class ModifyNotificationActivity extends AppCompatActivity {
             dateTextView.setVisibility(View.GONE);
         }
 
+        if(!isAdmin){
+            titleEdit.setFocusable(false);
+            contentEdit.setFocusable(false);
+            isReadOnly = true;
+            getSupportActionBar().setTitle("상세보기");
+        }
+
         isModified = false;
     }
 
@@ -95,15 +104,17 @@ public class ModifyNotificationActivity extends AppCompatActivity {
     // 액션바에 있는 메뉴 설정; 공지를 처음 만들경우 WritableMode, 기존 공지를 확인하는 경우 ReadOnlyMoce
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_noti, menu);
-        editMenu = menu.findItem(R.id.m_edit_noti);
-        saveMenu = menu.findItem(R.id.m_save_noti);
+        if(isAdmin){
+            getMenuInflater().inflate(R.menu.menu_noti, menu);
+            editMenu = menu.findItem(R.id.m_edit_noti);
+            saveMenu = menu.findItem(R.id.m_save_noti);
 
-        if(idx == -1){        // when adding noti
-            changeToWritableMode();
-        }
-        else{                   //when seeing noti
-            changeToReadOnlyMode();
+            if(idx == -1){        // when adding noti
+                changeToWritableMode();
+            }
+            else{                   //when seeing noti
+                changeToReadOnlyMode();
+            }
         }
         return super.onCreateOptionsMenu(menu);
     }
