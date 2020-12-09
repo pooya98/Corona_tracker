@@ -87,6 +87,7 @@ public class NotiFragment extends Fragment {
     public void addNoti() {
         Intent intent = new Intent(v.getContext(), ModifyNotificationActivity.class);
         intent.putExtra("idx", -1);
+        intent.putExtra("admin", true);
         startActivityForResult(intent, 100);
     }
 
