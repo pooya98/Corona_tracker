@@ -24,6 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:layout_gravity="center"
+            android:background="#4285F4"
+            android:textColor="#FFFFFF"
+            android:layout_marginHorizontal="5dp"
             android:text="학생"
             android:onClick="setMode"/>
         <Button
@@ -32,6 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:layout_gravity="center"
+            android:background="#4285F4"
+            android:textColor="#FFFFFF"
+            android:layout_marginHorizontal="5dp"
             android:text="관리자"
             android:onClick="setMode" />
         <Button

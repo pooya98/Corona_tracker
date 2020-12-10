@@ -31,12 +31,12 @@ public class NotiService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "main");
 //        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
 
-        mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+        mainIntent = new Intent(getApplicationContext(), Scan.class);
         pendingIntent = PendingIntent.getActivity(getApplicationContext(), 945, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        builder.setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Title")
-                .setContentText("Content")
+        builder.setSmallIcon(R.drawable.ic_camera)
+                .setContentTitle("Corona Tracker")
+                .setContentText("터치하여 QR코드 인식")
                 .setPriority(NotificationCompat.PRIORITY_MIN)
                 .setContentIntent(pendingIntent)
                 .setNumber(0);
