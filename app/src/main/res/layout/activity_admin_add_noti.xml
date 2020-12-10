@@ -23,6 +23,13 @@
         android:layout_marginEnd="20dp"
         android:text="최근 수정 : " />
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="5dp"
+        android:background="?android:attr/listDivider" />
+
     <EditText
         android:id="@+id/edit_content"
         android:layout_width="match_parent"
